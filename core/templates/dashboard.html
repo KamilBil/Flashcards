@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4">
+            <canvas id="pieChart"></canvas>
+        </div>
+        <div class="col-lg-4">
+            <canvas id="barChart"></canvas>
+        </div>
+        <div class="col-lg-4">
+            <canvas id="horizontalBarChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Wykres kołowy
+        const pieChart = new Chart(document.getElementById('pieChart'), {
+            type: 'pie',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow'],
+                datasets: [{
+                    data: [10, 20, 30],
+                    backgroundColor: ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(255, 205, 86)']
+                }]
+            }
+        });
+
+        // Wykres słupkowy
+        const barChart = new Chart(document.getElementById('barChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow'],
+                datasets: [{
+                    data: [10, 20, 30],
+                    backgroundColor: ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(255, 205, 86)']
+                }]
+            },
+            options: {
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        // Wykres poziomy słupkowy
+        const horizontalBarChart = new Chart(document.getElementById('horizontalBarChart'), {
+            type: 'horizontalBar',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow'],
+                datasets: [{
+                    data: [10, 20, 30],
+                    backgroundColor: ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(255, 205, 86)']
+                }]
+            },
+            options: {
+                scales: {
+                    x: { beginAtZero: true }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}
