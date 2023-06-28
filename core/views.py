@@ -36,7 +36,7 @@ def signup(request):
     return render(request, 'signup.html', {'form': form})
 
 @login_required
-def practice(request):
+def practise(request):
     pass
 
 @login_required
