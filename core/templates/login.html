@@ -1,10 +1,38 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
+{% load static %}
 {% block content %}
-<h2>Zaloguj się</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Zaloguj</button>
-</form>
-{% endblock %}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-5">
+            <h1 class="text-center mb-4">Login</h1>
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        <div class="form-group mb-3">
+                            <label for="username">Username:</label>
+                            <input type="text" name="username" class="form-control" required autofocus>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="password">Password:</label>
+                            <input type="password" name="password" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary w-100">Login</button>
+                        </div>
+                    </form>
+                    <div class="text-center mt-3">
+                        <a href="{% url 'password_reset' %}">Forgot password?</a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <p>Don't have an account? <a href="{% url 'signup' %}">Sign up</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

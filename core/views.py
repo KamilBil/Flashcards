@@ -3,12 +3,15 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .forms import SignUpForm
 
+
 def home(request):
     return render(request, 'index.html')
+
 
 @login_required
 def dashboard(request):
     return render(request, 'dashboard.html')
+
 
 def login_view(request):
     if request.method == 'POST':
@@ -23,7 +26,8 @@ def login_view(request):
             ...
     else:
         return render(request, 'login.html')
-    
+
+
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -35,9 +39,15 @@ def signup(request):
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
 
+
+def password_reset(request):
+    return render(request, 'password_reset.html')
+
+
 @login_required
 def practise(request):
     pass
+
 
 @login_required
 def manage(request):
