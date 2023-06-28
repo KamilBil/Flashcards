@@ -46,9 +46,9 @@ def password_reset(request):
 
 @login_required
 def practise(request):
-    pass
+    return render(request, 'practise.html')
 
 
 @login_required
 def manage(request):
-    pass
+    return render(request, 'manage.py')
