@@ -8,6 +8,7 @@
         <div class="bg-light p-5 rounded">
             <h2 class="mb-4 text-center">Manage Flashcards for {{ pack.name }}</h2>
             <form id="flashcard-form">
+                <h1>debug: {{flashcards}}</h1>
                 {% csrf_token %}
                 <input type="hidden" id="flashcard-id" value="{{ flashcards.0.id }}">
                 <div class="form-group mb-3">

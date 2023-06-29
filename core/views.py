@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .forms import SignUpForm
 from django.http import JsonResponse
-from .models import Pack
+from .models import Pack, Flashcard
 import json
 
 
@@ -59,8 +59,10 @@ def manage_packs(request):
 
 
 @login_required
-def manage_flashcards(request):
-    return render(request, 'manage_flashcards.html')
+def manage_flashcards(request, pack_id: int):
+    pack = Pack.objects.get(id=pack_id)
+    flashcards = Flashcard.objects.filter(pack_id=pack_id)
+    return render(request, 'manage_flashcards.html', {'pack': pack, 'flashcards': flashcards})
 
 
 @login_required
