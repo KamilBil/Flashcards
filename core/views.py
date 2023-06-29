@@ -2,6 +2,9 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .forms import SignUpForm
+from django.http import JsonResponse
+from .models import Pack
+import json
 
 
 def home(request):
@@ -50,5 +53,26 @@ def practise(request):
 
 
 @login_required
-def manage(request):
-    return render(request, 'manage.py')
+def manage_packs(request):
+    packs = Pack.objects.filter(owner=request.user)
+    return render(request, 'manage_packs.html', {'packs': packs})
+
+
+@login_required
+def manage_flashcards(request):
+    return render(request, 'manage_flashcards.html')
+
+
+@login_required
+def create_pack(request):
+    if request.method == 'POST':
+        json_data = json.loads(request.body)
+        name = json_data.get('name')
+        description = json_data.get('description')
+        if name and description:
+            pack = Pack(name=name, description=description, owner=request.user)
+            pack.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'error': 'Name or description missing'})
+    return JsonResponse({'success': False, 'error': 'Invalid method'})

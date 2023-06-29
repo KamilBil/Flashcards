@@ -9,7 +9,10 @@ urlpatterns = [
     path('home/', views.home, name='home'),
     path('signup/', views.signup, name='signup'),
     path('practise/', views.practise, name='practise'),
-    path('manage/', views.manage, name='manage'),
+    path('manage_packs/', views.manage_packs, name='manage_packs'),
+    path('manage_flashcards/<int:pack_id>/',
+         views.manage_flashcards, name='manage_flashcards'),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('password_reset/', views.password_reset, name='password_reset'),
+    path('create_pack/', views.create_pack, name='create_pack'),
 ]
