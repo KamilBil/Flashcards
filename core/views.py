@@ -124,8 +124,10 @@ def edit_flashcard(request, flashcard_id: int):
 
 @login_required
 def review(request, pack_id: int):
-    flashcards = Flashcard.objects.filter(pack_id=pack_id)
-    return render(request, 'review.html', {'flashcards': flashcards})
+    flashcards = list(Flashcard.objects.filter(pack_id=pack_id).values())
+    serialized_flashcards = json.dumps(flashcards)
+    pack = Pack.objects.get(id=pack_id)
+    return render(request, 'review.html', {'pack': pack, 'flashcards': serialized_flashcards})
 
 
 @login_required
