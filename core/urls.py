@@ -15,4 +15,10 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path('password_reset/', views.password_reset, name='password_reset'),
     path('create_pack/', views.create_pack, name='create_pack'),
+    path('create_flashcard/<int:pack_id>',
+         views.create_flashcard, name='create_flashcard'),
+    path('edit_flashcard/<int:flashcard_id>',
+         views.edit_flashcard, name='edit_flashcard'),
+    path('delete_flashcard/<int:flashcard_id>',
+         views.delete_flashcard, name='delete_flashcard'),
 ]

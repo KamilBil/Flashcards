@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_http_methods
 from .forms import SignUpForm
 from django.http import JsonResponse
 from .models import Pack, Flashcard
@@ -78,3 +79,61 @@ def create_pack(request):
         else:
             return JsonResponse({'success': False, 'error': 'Name or description missing'})
     return JsonResponse({'success': False, 'error': 'Invalid method'})
+
+
+@login_required
+def create_flashcard(request, pack_id: int):
+    if request.method == 'POST':
+        json_data = json.loads(request.body)
+        print('json_Data: ', json_data)
+        question = json_data.get('question')
+        answer = json_data.get('answer')
+        pack = Pack.objects.get(id=pack_id)
+        if question and answer:
+            pack = Flashcard(question=question, answer=answer, pack=pack)
+            pack.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'error': 'Question or answer missing'})
+    return JsonResponse({'success': False, 'error': 'Invalid method'})
+
+
+@login_required
+@require_http_methods(["DELETE"])
+def delete_flashcard(request, flashcard_id: int):
+    print('debug')
+    try:
+        flashcard = Flashcard.objects.get(id=flashcard_id)
+    except Flashcard.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Flashcard not found'})
+
+    if flashcard.pack.owner != request.user:
+        return JsonResponse({'success': False, 'error': 'Not authorized'})
+
+    flashcard.delete()
+    return JsonResponse({'success': True})
+
+
+@login_required
+@require_http_methods(["POST"])
+def edit_flashcard(request, flashcard_id: int):
+    print('tutaj?')
+    try:
+        flashcard = Flashcard.objects.get(id=flashcard_id)
+    except Flashcard.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Flashcard not found'})
+
+    if flashcard.pack.owner != request.user:
+        return JsonResponse({'success': False, 'error': 'Not authorized'})
+
+    json_data = json.loads(request.body)
+    question = json_data.get('question')
+    answer = json_data.get('answer')
+
+    if question and answer:
+        flashcard.question = question
+        flashcard.answer = answer
+        flashcard.save()
+        return JsonResponse({'success': True})
+    else:
+        return JsonResponse({'success': False, 'error': 'Question or answer missing'})
