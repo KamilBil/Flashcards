@@ -4,6 +4,12 @@
 {% block content %}
 
 <h1 class="text-center" style="margin-top: 50px;">Edit {{ pack.name }} flashcards</h1>
+<div class="d-flex justify-content-center mb-3">
+    <button type="button" class="btn btn-secondary me-2" id="editPackButton" data-bs-toggle="modal"
+        data-bs-target="#editPackModal">Edit</button>
+    <button type="button" class="btn btn-danger" id="deletePackButton" data-bs-toggle="modal"
+        data-bs-target="#deletePackModal">Delete</button>
+</div>
 <div class="container py-5 d-flex justify-content-center flex-wrap">
     {% for flashcard in flashcards %}
     <div class="card m-2 position-relative" style="width: 18rem;">
@@ -58,6 +64,22 @@
 </div>
 {% endfor %}
 
+<!-- Warning before removing -->
+<div class="modal fade" id="deletePackModal" tabindex="-1" aria-labelledby="deletePackModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deletePackModalLabel">Do you want remove {{pack.name}} pack?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" id="deletePackInModal">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Modal -->
 <div class="modal fade" id="addFlashcardModal" tabindex="-1" aria-labelledby="addFlashcardModalLabel"
     aria-hidden="true">
@@ -87,6 +109,35 @@
     </div>
 </div>
 
+
+<!-- Edit pack modal -->
+<div class="modal fade" id="editPackModal" tabindex="-1" aria-labelledby="editPackModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editPackModalLabel">Edit pack</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editPackForm">
+                    <div class="form-group">
+                        <label for="packNameInModal" class="col-form-label">Name:</label>
+                        <textarea type="text" class="form-control" id="packNameInModal">{{ pack.name }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="descriptionInModal" class="col-form-label">Description:</label>
+                        <textarea class="form-control" id="descriptionInModal">{{ pack.description }}</textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="editPackButtonInModal">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% block script %}
 <script>
     document.getElementById('createFlashcardButton').addEventListener('click', function () {
@@ -110,6 +161,50 @@
                     location.reload();
                 } else {
                     alert("Failed to create pack: " + data.error);
+                }
+            });
+    });
+
+    document.getElementById('deletePackInModal').addEventListener('click', function () {
+        fetch("{% url 'delete_pack' pack.id %}", {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = '/manage_packs';
+                } else {
+                    alert("Failed to delete flashcard: " + data.error);
+                }
+            });
+    });
+
+    document.getElementById('editPackButtonInModal').addEventListener('click', function () {
+        const packName = document.getElementById('packNameInModal').value;
+        const packDescription = document.getElementById('descriptionInModal').value;
+
+        console.log('asdasdffg')
+        fetch("{% url 'edit_pack' pack.id %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+            body: JSON.stringify({
+                name: packName,
+                description: packDescription,
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert("Failed to delete flashcard: " + data.error);
                 }
             });
     });
@@ -142,6 +237,7 @@
                 }
             });
     });
+
 
     document.getElementById('deleteFlashcardButton{{flashcard.id}}').addEventListener('click', function () {
         fetch("{% url 'delete_flashcard' flashcard.id %}", {

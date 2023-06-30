@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% block content %}
+
+<h1 class="text-center" style="margin-top: 50px;">Select pack for learning</h1>
+<div class="container py-5 d-flex justify-content-center flex-wrap">
+    {% for pack in packs %}
+    <div class="card m-2 position-relative" style="width: 18rem;">
+        <div class="card-body text-center">
+            <h5 class="card-title">{{ pack.name }}</h5>
+            {{ pack.description }}
+        </div>
+        <a href="{% url 'review' pack.id %}" class="position-absolute top-0 start-0 w-100 h-100 invisible-link"></a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

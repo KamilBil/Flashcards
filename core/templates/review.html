@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% block content %}
+
+<h1 class="text-center" style="margin-top: 50px;">Select pack for learning</h1>
+<div class="container py-5 d-flex justify-content-center flex-wrap">
+    {% for pack in packs %}
+    {% endfor %}
+</div>
+{% endblock %}

@@ -21,4 +21,8 @@ urlpatterns = [
          views.edit_flashcard, name='edit_flashcard'),
     path('delete_flashcard/<int:flashcard_id>',
          views.delete_flashcard, name='delete_flashcard'),
+    path('review/<int:pack_id>', views.review, name='review'),
+    path('delete_pack/<int:pack_id>',
+         views.delete_pack, name='delete_pack'),
+    path('edit_pack/<int:pack_id>', views.edit_pack, name='edit_pack'),
 ]

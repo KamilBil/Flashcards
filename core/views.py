@@ -50,7 +50,8 @@ def password_reset(request):
 
 @login_required
 def practise(request):
-    return render(request, 'practise.html')
+    packs = Pack.objects.filter(owner=request.user)
+    return render(request, 'practise.html', {'packs': packs})
 
 
 @login_required
@@ -85,7 +86,6 @@ def create_pack(request):
 def create_flashcard(request, pack_id: int):
     if request.method == 'POST':
         json_data = json.loads(request.body)
-        print('json_Data: ', json_data)
         question = json_data.get('question')
         answer = json_data.get('answer')
         pack = Pack.objects.get(id=pack_id)
@@ -99,25 +99,8 @@ def create_flashcard(request, pack_id: int):
 
 
 @login_required
-@require_http_methods(["DELETE"])
-def delete_flashcard(request, flashcard_id: int):
-    print('debug')
-    try:
-        flashcard = Flashcard.objects.get(id=flashcard_id)
-    except Flashcard.DoesNotExist:
-        return JsonResponse({'success': False, 'error': 'Flashcard not found'})
-
-    if flashcard.pack.owner != request.user:
-        return JsonResponse({'success': False, 'error': 'Not authorized'})
-
-    flashcard.delete()
-    return JsonResponse({'success': True})
-
-
-@login_required
 @require_http_methods(["POST"])
 def edit_flashcard(request, flashcard_id: int):
-    print('tutaj?')
     try:
         flashcard = Flashcard.objects.get(id=flashcard_id)
     except Flashcard.DoesNotExist:
@@ -137,3 +120,63 @@ def edit_flashcard(request, flashcard_id: int):
         return JsonResponse({'success': True})
     else:
         return JsonResponse({'success': False, 'error': 'Question or answer missing'})
+
+
+@login_required
+def review(request, pack_id: int):
+    flashcards = Flashcard.objects.filter(pack_id=pack_id)
+    return render(request, 'review.html', {'flashcards': flashcards})
+
+
+@login_required
+@require_http_methods(["DELETE"])
+def delete_flashcard(request, flashcard_id: int):
+    try:
+        flashcard = Flashcard.objects.get(id=flashcard_id)
+    except Flashcard.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Flashcard not found'})
+
+    if flashcard.pack.owner != request.user:
+        return JsonResponse({'success': False, 'error': 'Not authorized'})
+
+    flashcard.delete()
+    return JsonResponse({'success': True})
+
+
+@login_required
+@require_http_methods(["DELETE"])
+def delete_pack(request, pack_id: int):
+    try:
+        pack = Pack.objects.get(id=pack_id)
+    except Pack.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Pack not found'})
+
+    if pack.owner != request.user:
+        return JsonResponse({'success': False, 'error': 'Not authorized'})
+
+    pack.delete()
+    return JsonResponse({'success': True})
+
+
+@login_required
+@require_http_methods(["POST"])
+def edit_pack(request, pack_id: int):
+    try:
+        pack = Pack.objects.get(id=pack_id)
+    except Pack.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Pack not found'})
+
+    if pack.owner != request.user:
+        return JsonResponse({'success': False, 'error': 'Not authorized'})
+
+    json_data = json.loads(request.body)
+    name = json_data.get('name')
+    description = json_data.get('description')
+
+    if name and description:
+        pack.name = name
+        pack.description = description
+        pack.save()
+        return JsonResponse({'success': True})
+    else:
+        return JsonResponse({'success': False, 'error': 'Name or description missing'})
