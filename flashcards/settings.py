@@ -86,6 +86,9 @@ DATABASES = {
         'PASSWORD': config('POSTGRES_PASSWORD'),
         'HOST': config('POSTGRES_HOST'),
         'PORT': '5432',
+        'OPTIONS': {
+            'sslmode': 'require',
+        },
     }
 }
 
@@ -132,7 +135,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CSRF_TRUSTED_ORIGINS = ['https://flashcardsdemoapp.azurewebsites.net', 'https://flashcardsdemoapp.azurewebsites.net/',
-                        'https://www.flashcardsdemoapp.azurewebsites.net/', 'flashcardsdemoapp.azurewebsites.net']
+                        'https://www.flashcardsdemoapp.azurewebsites.net/']
 
 LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'
