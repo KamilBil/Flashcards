@@ -28,8 +28,7 @@ def login_view(request):
             return redirect('manage_packs')
         else:
             messages.add_message(request, messages.ERROR, 'Incorrent login or password.')
-    else:
-        return render(request, 'login.html')
+    return render(request, 'login.html')
 
 
 def signup(request):
