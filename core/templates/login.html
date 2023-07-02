@@ -7,6 +7,17 @@
     <div class="row justify-content-center">
         <div class="col-lg-5">
             <h1 class="text-center mb-4">Login</h1>
+
+
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+
+
             <div class="card">
                 <div class="card-body">
                     <form method="POST" action="{% url 'login' %}">

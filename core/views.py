@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.views.decorators.http import require_http_methods
 from .forms import SignUpForm
 from django.http import JsonResponse
@@ -24,10 +25,9 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('home')
+            return redirect('manage_packs')
         else:
-            # Return an 'invalid login' error message.
-            ...
+            messages.add_message(request, messages.ERROR, 'Incorrent login or password.')
     else:
         return render(request, 'login.html')
 
