@@ -3,7 +3,7 @@
 * [General info](#general-info)
 * [Technologies](#technologies)
 * [Development](#development)
-* [Screenshots](#setup)
+* [Screenshots](#screenshots)
 
 ## General info
 A simple CRUD application where you can add and manage flashcards. The project is still under development and serves as a testing environment for various solutions that will be gradually added.
