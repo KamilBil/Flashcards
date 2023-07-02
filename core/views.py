@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.decorators.http import require_http_methods
+from django.urls import reverse
 from .forms import SignUpForm
 from django.http import JsonResponse
 from .models import Pack, Flashcard
@@ -29,9 +30,7 @@ def login_view(request):
         else:
             messages.add_message(request, messages.ERROR,
                                  'Incorrent login or password.')
-            return render(request, 'login.html')
-    messages.add_message(request, messages.ERROR, 'Login error.')
-    return render(request, 'login.html')
+        return redirect(reverse('login'))
 
 
 def signup(request):
