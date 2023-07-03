@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from decouple import config
+from django.contrib.messages import constants as messages
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -27,7 +28,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['flashcardsdemoapp.azurewebsites.net']
+ALLOWED_HOSTS = ['flashcardsdemoapp.azurewebsites.net', 'localhost']
 
 
 # Application definition
@@ -86,9 +87,6 @@ DATABASES = {
         'PASSWORD': config('POSTGRES_PASSWORD'),
         'HOST': config('POSTGRES_HOST'),
         'PORT': '5432',
-        'OPTIONS': {
-            'sslmode': 'require',
-        },
     }
 }
 
@@ -138,4 +136,11 @@ CSRF_TRUSTED_ORIGINS = ['https://flashcardsdemoapp.azurewebsites.net', 'https://
                         'https://www.flashcardsdemoapp.azurewebsites.net/']
 
 LOGIN_REDIRECT_URL = 'manage_packs'
-LOGIN_URL = 'login'
+
+MESSAGE_TAGS = {
+    messages.DEBUG: 'secondary',
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'danger',
+}
