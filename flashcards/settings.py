@@ -136,6 +136,7 @@ CSRF_TRUSTED_ORIGINS = ['https://flashcardsdemoapp.azurewebsites.net', 'https://
                         'https://www.flashcardsdemoapp.azurewebsites.net/']
 
 LOGIN_REDIRECT_URL = 'manage_packs'
+LOGIN_URL = 'login'
 
 MESSAGE_TAGS = {
     messages.DEBUG: 'secondary',
