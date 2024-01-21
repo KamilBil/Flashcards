@@ -1,5 +1,7 @@
-FROM python:3.9-alpine
+FROM python:3.11-alpine
 
+# Avoid __pycache__
+ENV PYTHONDONTWRITEBYTECODE 1
 # Disable output buffering
 ENV PYTHONBUFFERED 1
 
