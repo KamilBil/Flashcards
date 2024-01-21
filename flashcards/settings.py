@@ -140,8 +140,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-CSRF_TRUSTED_ORIGINS = ['https://flashcardsdemoapp.azurewebsites.net', 'https://flashcardsdemoapp.azurewebsites.net/',
-                        'https://www.flashcardsdemoapp.azurewebsites.net/']
+CSRF_TRUSTED_ORIGINS = [config("ALLOWED_HOST"), 'localhost']
 
 LOGIN_REDIRECT_URL = 'manage_packs'
 LOGIN_URL = 'login'
