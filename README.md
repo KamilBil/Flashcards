@@ -8,7 +8,7 @@
 ## General info
 A simple CRUD application where you can add and manage flashcards. The project is still under development and serves as a testing environment for various solutions that will be gradually added.
 
-You can test the project [here](https://flashcardsdemoapp.azurewebsites.net/).
+You can test the project [here](https://flashcards.kamilbil.pl/).
 
 ## Technologies
 The project is created with:
